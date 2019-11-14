@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'pages/tabs/Tabs.dart';
-import 'routes/router.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  MyAppState createState() => new MyAppState();
+  SearchState createState() => new SearchState();
 }
 
-class MyAppState extends State<MyApp> {
+class SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        initialRoute: '/',
-        onGenerateRoute:onGenerateRoute
-
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('我是搜索'),
+      ),
     );
   }
   @override
@@ -31,7 +28,7 @@ class MyAppState extends State<MyApp> {
   }
 
   @override
-  void didUpdateWidget(MyApp oldWidget) {
+  void didUpdateWidget(Search oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }

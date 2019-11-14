@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'pages/tabs/Tabs.dart';
-import 'routes/router.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
+class CategoryPage extends StatefulWidget {
   @override
-  MyAppState createState() => new MyAppState();
+  CategoryPageState createState() => new CategoryPageState();
 }
 
-class MyAppState extends State<MyApp> {
+class CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        initialRoute: '/',
-        onGenerateRoute:onGenerateRoute
-
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('商品分类'),
+      ),
     );
   }
   @override
@@ -31,7 +27,7 @@ class MyAppState extends State<MyApp> {
   }
 
   @override
-  void didUpdateWidget(MyApp oldWidget) {
+  void didUpdateWidget(CategoryPage oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }

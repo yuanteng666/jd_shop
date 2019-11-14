@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'pages/tabs/Tabs.dart';
-import 'routes/router.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
+class PersonPage extends StatefulWidget {
   @override
-  MyAppState createState() => new MyAppState();
+  PersonPageState createState() => new PersonPageState();
 }
 
-class MyAppState extends State<MyApp> {
+class PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        initialRoute: '/',
-        onGenerateRoute:onGenerateRoute
-
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('个人'),
+      ),
     );
   }
   @override
@@ -31,7 +27,7 @@ class MyAppState extends State<MyApp> {
   }
 
   @override
-  void didUpdateWidget(MyApp oldWidget) {
+  void didUpdateWidget(PersonPage oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }
