@@ -96,19 +96,26 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
             , itemBuilder: (context,index){
               String pic = this._rightCatelist[index].pic;
               String newPic = Config.DOMAIN + pic.replaceAll("\\", "/");
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 1/1,
-                      child: Image.network(newPic,fit: BoxFit.cover,),
-                    ),
-                    Container(
-                      height: ScreenAdapter.setHeight(28.0),
-                      child: Text("${this._rightCatelist[index].title}"),
-                    )
-                  ],
+              return InkWell(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      AspectRatio(
+                        aspectRatio: 1/1,
+                        child: Image.network(newPic,fit: BoxFit.cover,),
+                      ),
+                      Container(
+                        height: ScreenAdapter.setHeight(28.0),
+                        child: Text("${this._rightCatelist[index].title}"),
+                      )
+                    ],
+                  ),
                 ),
+                onTap: (){
+                  Navigator.pushNamed(context, '/productList',arguments: {
+                    'cid':this._rightCatelist[index].sId
+                  });
+                },
               );
             },
             itemCount: this._rightCatelist.length,),
