@@ -23,4 +23,8 @@ class ScreenAdapter {
     static double getScreenHeight(){
         return ScreenUtil.screenHeightDp;
     }
+
+    static double setFontsize(double fontSize){
+        return ScreenUtil.getInstance().setSp(fontSize);
+    }
 }

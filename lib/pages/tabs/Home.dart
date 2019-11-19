@@ -18,6 +18,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   List _focusList = [];
   List _remProductlist = [];
   List _hotProductlist = [];
+
   Widget _titleWidget(String value){
     return Container(
       alignment: Alignment.centerLeft,
@@ -89,27 +90,36 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   }
   Widget _hotProductList(){
     if(this._hotProductlist.length > 0){
-      return  Container(
-        padding: EdgeInsets.all(ScreenAdapter.setWidth(10.0)),
-        height: ScreenAdapter.setHeight(200.0),
-        child:   new ListView.builder(
+      return Container(
+        height: ScreenAdapter.setHeight(234),
+        padding: EdgeInsets.all(ScreenAdapter.setWidth(20)),
+        child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            String pic = this._hotProductlist[index].sPic;
-            String spic = pic.replaceAll("\\", '/');
+          itemBuilder: (contxt, index) {
+            //处理图片
+            String sPic = this._hotProductlist[index].sPic;
+            sPic = Config.DOMAIN + sPic.replaceAll('\\', '/');
+
             return Column(
               children: <Widget>[
                 Container(
-                  width: ScreenAdapter.setWidth(160.0),
-                  height: ScreenAdapter.setHeight(140.0),
-                  margin: EdgeInsets.only(right: ScreenAdapter.setWidth(10.0)),
-                  child:  Image.network("${Config.DOMAIN}${spic}",fit: BoxFit.cover),
+                  height: ScreenAdapter.setHeight(140),
+                  width: ScreenAdapter.setWidth(140),
+                  margin: EdgeInsets.only(right: ScreenAdapter.setWidth(21)),
+                  child: Image.network(sPic, fit: BoxFit.cover),
                 ),
-                Text('￥${this._hotProductlist[index].price}',style: TextStyle(color: Colors.redAccent),)
+                Container(
+                  padding: EdgeInsets.only(top: ScreenAdapter.setHeight(10)),
+                  height: ScreenAdapter.setHeight(44),
+                  child: Text(
+                    "¥${this._hotProductlist[index].price}",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
               ],
             );
           },
+          itemCount: this._hotProductlist.length,
         ),
       );
     }else{

@@ -13,9 +13,12 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         initialRoute: '/',
-        onGenerateRoute:onGenerateRoute
-
+        onGenerateRoute:onGenerateRoute,
+        theme: ThemeData(
+        primaryColor: Colors.white
+    ),
     );
   }
   @override
