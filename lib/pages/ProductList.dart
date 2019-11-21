@@ -31,10 +31,13 @@ class ProductListPageState extends State<ProductListPage> {
   bool isHaveData = true;
   //是否可以加载数据，防止重复加载
   bool isCanLoading = true;
+  //是否为空 ，防止出现没有数据的情况
+  bool isEmptyList = false;
   int currentPage = 1;
   int pageSize = 10;
   String sort = '';
-
+  TextEditingController _textEditingController = new TextEditingController();
+  String keyWords;
   /*获取商品列表*/
   _getProductList() async{
     setState(() {
@@ -42,10 +45,10 @@ class ProductListPageState extends State<ProductListPage> {
     });
     var api = '';
     //判断是否来自 搜索页面
-    if(widget.arguments['keyWords'] == null){
+    if(this.keyWords== null ){
         api = Config.DOMAIN + "api/plist?cid=${widget.arguments['cid']}&page=${this.currentPage}&pageSize=${this.pageSize}&sort=${this.sort}";
     }else{
-        api = Config.DOMAIN + "api/plist?search=${widget.arguments['keyWords']}&page=${this.currentPage}&pageSize=${this.pageSize}&sort=${this.sort}";
+        api = Config.DOMAIN + "api/plist?search=${this.keyWords}&page=${this.currentPage}&pageSize=${this.pageSize}&sort=${this.sort}";
     }
     print(api);
 
@@ -57,6 +60,15 @@ class ProductListPageState extends State<ProductListPage> {
       currentPage++;
       isCanLoading = true;
     });
+    if(model.result.length == 0 && this.currentPage == 1){
+      setState(() {
+        this.isEmptyList = true;
+      });
+    }else{
+      setState(() {
+        this.isEmptyList = false;
+      });
+    }
     if(model.result.length < this.pageSize){
       setState(() {
         this.isHaveData = false;
@@ -240,9 +252,47 @@ class ProductListPageState extends State<ProductListPage> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text('商品列表'),
+        title: Container(
+          height: ScreenAdapter.setHeight(70.0),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(230, 230, 230, 0.8),
+            borderRadius: BorderRadius.circular(30),
+
+          ),
+          child: TextField(
+            autofocus: true,
+            controller: _textEditingController,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none
+                )
+            ),
+            onChanged: (value){
+              setState(() {
+                this.keyWords = value;
+              });
+            },
+          ),
+        ),
         actions: <Widget>[
-          Text('')
+          InkWell(
+
+            child: Container(
+              padding: EdgeInsets.only(right: ScreenAdapter.setWidth(10.0)),
+              child: Row(
+                children: <Widget>[
+                  Text('搜索',style: TextStyle(fontSize: ScreenAdapter.setFontsize(30)),)
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+              ),
+              height: ScreenAdapter.setHeight(70),
+              width: ScreenAdapter.setWidth(90),            ),
+               onTap: (){
+                this._subHeaderChange(1);
+            },
+          )
         ],
       ),
       endDrawer: Drawer(
@@ -250,7 +300,9 @@ class ProductListPageState extends State<ProductListPage> {
           child: Text('我是抽屉'),
         ),
       ),
-      body:Stack(
+      body:this.isEmptyList?Center(
+        child: Text('没有要搜索的数据'),
+      ):Stack(
         children: <Widget>[
           _productSubNav(),
           _productListWidget()
@@ -272,7 +324,7 @@ class ProductListPageState extends State<ProductListPage> {
         }
       }
     });
-
+    this.keyWords = widget.arguments['keyWords'] == null ?null:widget.arguments['keyWords'];
     //初始化获取数据
     this._getProductList();
   }
