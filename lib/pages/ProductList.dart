@@ -4,6 +4,7 @@ import 'package:jd_shop/config/Config.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
 import 'package:jd_shop/modal/ProductModel.dart';
 import 'package:jd_shop/widgets/LoadingWidget.dart';
+import 'package:jd_shop/utils/SearchService.dart';
 class ProductListPage extends StatefulWidget {
   Map arguments ;
 
@@ -290,7 +291,9 @@ class ProductListPageState extends State<ProductListPage> {
               height: ScreenAdapter.setHeight(70),
               width: ScreenAdapter.setWidth(90),            ),
                onTap: (){
-                this._subHeaderChange(1);
+                 SearchService.saveSearchData(this.keyWords);
+
+                 this._subHeaderChange(1);
             },
           )
         ],

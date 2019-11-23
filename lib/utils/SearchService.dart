@@ -4,7 +4,7 @@ import 'dart:convert';
 
 
 class SearchService{
-    static void saveData(value) async{
+    static void saveSearchData(value) async{
         try{
             List searchList = json.decode(await Storage.getString('searchList'));
             print(searchList);
@@ -24,5 +24,24 @@ class SearchService{
             //保存数据
             await Storage.setString('searchList', json.encode(list));
         }
+    }
+    
+    static Future<List> getSearchList() async{
+        try{
+            List searchList = json.decode(await Storage.getString('searchList'));
+            return searchList;
+        }catch(e){
+            return [];
+        }
+    }
+
+    static Future<void> removeSearchList() async{
+        await Storage.remove('searchList');
+    }
+
+    static Future<void> removeSearchKeyword(keyWord) async{
+        List searchList = json.decode(await Storage.getString('searchList'));
+        searchList.remove(keyWord);
+        await Storage.setString('searchList', json.encode(searchList));
     }
 }
