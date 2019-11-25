@@ -140,49 +140,56 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
             String pic = value.pic;
             String newPic = Config.DOMAIN + pic.replaceAll("\\", "/");
             print(newPic);
-           return Container(
-              width: itemWidth,
-              padding: EdgeInsets.all(ScreenAdapter.setWidth(10)),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.black12,
-                      width: 1
-                  )
-              ),
-              child: Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1/1,
-                    child: Image.network("${newPic}",fit: BoxFit.cover,),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: ScreenAdapter.setHeight(10.0),
-                        bottom: ScreenAdapter.setHeight(10.0)),
-                    child: Text("${value.title}",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.black54),),
-                  ),
-                  Stack(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child:  Text("￥${value.price}",style: TextStyle(
-                            color: Colors.red,fontSize: 16.0
-                        ),),
+           return InkWell(
+             onTap: (){
+               Navigator.pushNamed(context, '/ProductContent', arguments: {
+                 'id':value.sId
+               });
+             },
+             child: Container(
+               width: itemWidth,
+               padding: EdgeInsets.all(ScreenAdapter.setWidth(10)),
+               decoration: BoxDecoration(
+                   border: Border.all(
+                       color: Colors.black12,
+                       width: 1
+                   )
+               ),
+               child: Column(
+                 children: <Widget>[
+                   AspectRatio(
+                     aspectRatio: 1/1,
+                     child: Image.network("${newPic}",fit: BoxFit.cover,),
+                   ),
+                   Padding(
+                     padding: EdgeInsets.only(top: ScreenAdapter.setHeight(10.0),
+                         bottom: ScreenAdapter.setHeight(10.0)),
+                     child: Text("${value.title}",
+                       maxLines: 2,
+                       overflow: TextOverflow.ellipsis,
+                       style: TextStyle(color: Colors.black54),),
+                   ),
+                   Stack(
+                     children: <Widget>[
+                       Align(
+                         alignment: Alignment.centerLeft,
+                         child:  Text("￥${value.price}",style: TextStyle(
+                             color: Colors.red,fontSize: 16.0
+                         ),),
 
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child:  Text("￥${value.oldPrice}",style: TextStyle(
-                            color: Colors.black54,fontSize: 14.0,decoration: TextDecoration.lineThrough
-                        ),),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            );
+                       ),
+                       Align(
+                         alignment: Alignment.centerRight,
+                         child:  Text("￥${value.oldPrice}",style: TextStyle(
+                             color: Colors.black54,fontSize: 14.0,decoration: TextDecoration.lineThrough
+                         ),),
+                       )
+                     ],
+                   )
+                 ],
+               ),
+             ),
+           );
           }).toList(),
         ),
       );
