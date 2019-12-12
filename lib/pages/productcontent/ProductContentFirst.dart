@@ -1,172 +1,108 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:jd_shop/modal/ProductContentModel.dart';
 
 import '../../utils/ScreenAdapter.dart';
 import '../../widgets/JdButton.dart';
+import 'package:jd_shop/config/Config.dart';
 class ProductContentFirst extends StatefulWidget {
+  final List _productContentList ;
+
+  ProductContentFirst(this._productContentList,{Key key}):super(key:key);
+
   @override
   ProductContentFirstState createState() => new ProductContentFirstState();
 }
 
-class ProductContentFirstState extends State<ProductContentFirst> {
-
+class ProductContentFirstState extends State<ProductContentFirst> with AutomaticKeepAliveClientMixin {
+  Result result;
+  List<Attr> attrs;
+  String _selectValue = '';
 
   _attrShowActionSheet(){
     showModalBottomSheet(context: context, builder: (context){
-      return GestureDetector(
-        onTap: (){
-          return false;
-        },
-        child: Container(
-          child: Stack(
-            children: <Widget>[
-              ListView(
+      return StatefulBuilder(
+        builder: (BuildContext context,setBottomState){
+          return GestureDetector(
+            onTap: (){
+              return false;
+            },
+            child: Container(
+              child: Stack(
                 children: <Widget>[
-                    Column(
+                  ListView(
+                    children: <Widget>[
+                      Column(
+                        children: this.attrs.map((value){
+                          return Wrap(
+                            children: <Widget>[
+                              Container(
+                                width: ScreenAdapter.setWidth(140.0),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: ScreenAdapter.setHeight(38.0)),
+                                  child: Text('${value.cate}:',style: TextStyle(fontWeight: FontWeight.bold),),
+                                ),
+                              ),
+                              Container(
+                                width: ScreenAdapter.setWidth(540.0),
+                                child: Wrap(
+                                  children:value.attrlist.map((value2){
+                                    return Container(
+                                      margin: EdgeInsets.all(10.0),
+                                      child: InkWell(
+                                        child: Chip(
+                                          label: Text("${value2['title']}"),
+                                          backgroundColor: value2['checked'] == true?Colors.red:Colors.black12,
+                                        ),
+                                        onTap: (){
+                                          this._changeAttr(value.cate,value2['title'],setBottomState);
+                                        },
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            ],
+                          );
+                        }).toList(),
+                      )
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    width: ScreenAdapter.getScreenWidth(),
+                    height: ScreenAdapter.setHeight(80.0),
+                    child: Row(
                       children: <Widget>[
-                        Wrap(
-                          children: <Widget>[
-                            Container(
-                              width: ScreenAdapter.setWidth(100.0),
-                              child: Padding(
-                                padding: EdgeInsets.only(top: ScreenAdapter.setHeight(30.0)),
-                                child: Text('颜色:',style: TextStyle(fontWeight: FontWeight.bold),),
-                              ),
-                            ),
-                            Container(
-                              width: ScreenAdapter.setWidth(600.0),
-                              child: Wrap(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('红色'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('白色'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('黑色'),
-                                    ),
-                                  )
-                                ],
-                              ),
+                        Expanded(
+                            flex: 1,
+                            child:JdButton(
+                              text: '加入购物车',
+                              color: Color.fromRGBO(253, 1, 0, 0.9),
+                              callBack: (){
+                                print('加入购购物车');
+                              },
                             )
-                          ],
                         ),
-                        Wrap(
-                          children: <Widget>[
-                            Container(
-                              width: ScreenAdapter.setWidth(100.0),
-                              child: Padding(
-                                padding: EdgeInsets.only(top: ScreenAdapter.setHeight(30.0)),
-                                child: Text('风格:',style: TextStyle(fontWeight: FontWeight.bold),),
-                              ),
-                            ),
-                            Container(
-                              width: ScreenAdapter.setWidth(600.0),
-                              child: Wrap(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('S'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('M'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('L'),
-                                    ),
-                                  )
-                                ],
-                              ),
+                        Expanded(
+                            flex: 1,
+                            child:JdButton(
+                              text: '立即购买',
+                              color: Color.fromRGBO(255, 165, 0, 0.9),
+                              callBack: (){
+                                print('立即购买');
+                              },
                             )
-                          ],
-                        ),
-                        Wrap(
-                          children: <Widget>[
-                            Container(
-                              width: ScreenAdapter.setWidth(100.0),
-                              child: Padding(
-                                padding: EdgeInsets.only(top: ScreenAdapter.setHeight(30.0)),
-                                child: Text('尺寸:',style: TextStyle(fontWeight: FontWeight.bold),),
-                              ),
-                            ),
-                            Container(
-                              width: ScreenAdapter.setWidth(600.0),
-                              child: Wrap(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('S'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('M'),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Chip(
-                                      label: Text('L'),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
                         )
                       ],
-                    )
+                    ),
+                  )
                 ],
               ),
-              Positioned(
-                bottom: 0,
-                width: ScreenAdapter.getScreenWidth(),
-                height: ScreenAdapter.setHeight(80.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child:JdButton(
-                          text: '加入购物车',
-                          color: Color.fromRGBO(253, 1, 0, 0.9),
-                          callBack: (){
-                            print('加入购购物车');
-                          },
-                        )
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child:JdButton(
-                          text: '立即购买',
-                          color: Color.fromRGBO(255, 165, 0, 0.9),
-                          callBack: (){
-                            print('立即购买');
-                          },
-                        )
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
     });
   }
@@ -174,6 +110,9 @@ class ProductContentFirstState extends State<ProductContentFirst> {
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
+    //处理图片
+    String pic = Config.DOMAIN + this.result.pic;
+    pic = pic.replaceAll('\\', '/');
       return Container(
         padding: EdgeInsets.all(10.0),
           child:ListView(
@@ -181,17 +120,17 @@ class ProductContentFirstState extends State<ProductContentFirst> {
               //图片
               AspectRatio(
                 aspectRatio: 16/9,
-                child: Image.network('https://www.itying.com/images/flutter/p1.jpg',fit: BoxFit.cover,),
+                child: Image.network(pic,fit: BoxFit.cover,),
               ),
               //标题
               Container(
                 padding: EdgeInsets.only(top: ScreenAdapter.setHeight(10.0)),
-                child: Text('联想ThinkPad 翼480（0VCD） 英特尔酷睿i5 14英寸轻薄窄边框笔记本电脑',style: TextStyle(fontSize: ScreenAdapter.setFontsize(36.0),color: Colors.black),),
+                child: Text('${this.result.title}',style: TextStyle(fontSize: ScreenAdapter.setFontsize(36.0),color: Colors.black),),
               ),
               //详细描述
               Container(
                 padding: EdgeInsets.only(top: ScreenAdapter.setHeight(10.0)),
-                child: Text('震撼首发，15.9毫米全金属外观，4.9毫米轻薄窄边框，指纹电源按钮，杜比音效，2G独显，预装正版office软件',style: TextStyle(fontSize: ScreenAdapter.setFontsize(28.0),color: Colors.black54),),
+                child: Text('${this.result.subTitle}',style: TextStyle(fontSize: ScreenAdapter.setFontsize(28.0),color: Colors.black54),),
               ),
               //价格
               Container(
@@ -204,7 +143,7 @@ class ProductContentFirstState extends State<ProductContentFirst> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text('特价：'),
-                          Text('￥2556',style: TextStyle(fontSize: ScreenAdapter.setFontsize(46.0),color: Colors.red),)
+                          Text('￥${this.result.price}',style: TextStyle(fontSize: ScreenAdapter.setFontsize(46.0),color: Colors.red),)
                         ],
                       ),
                     ),
@@ -215,28 +154,28 @@ class ProductContentFirstState extends State<ProductContentFirst> {
                         crossAxisAlignment:CrossAxisAlignment.center,
                         children: <Widget>[
                           Text('原价：'),
-                          Text('￥2888',style: TextStyle(fontSize: ScreenAdapter.setFontsize(30.0),color: Colors.yellow,decoration: TextDecoration.lineThrough),)
+                          Text('￥${this.result.oldPrice}',style: TextStyle(fontSize: ScreenAdapter.setFontsize(30.0),color: Colors.yellow,decoration: TextDecoration.lineThrough),)
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-              InkWell(
+              this.attrs.length > 0 ? InkWell(
                 child: Container(
                   height: ScreenAdapter.setHeight(80.0),
                   child: Row(
                     children: <Widget>[
                       Text('型号：',style: TextStyle(fontWeight: FontWeight.bold),),
                       SizedBox(width: ScreenAdapter.setWidth(10.0),),
-                      Text('115,红色,XL,加绒')
+                      Text('${this._selectValue}')
                     ],
                   ),
                 ),
                 onTap: (){
                   this._attrShowActionSheet();
                 },
-              ),
+              ):Text(''),
               Divider(height: 1.0,),
               InkWell(
                 child: Container(
@@ -255,12 +194,67 @@ class ProductContentFirstState extends State<ProductContentFirst> {
           ),
       );
   }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      this.result = widget._productContentList[0];
+      this.attrs = result.attr;
+    });
+    print(attrs);
+    this._initAttr();
   }
 
+  _changeAttr(cate,title,setBottomState){
+    var attr = this.attrs;
+    for(var i = 0;i < attr.length;i++){
+      if(attr[i].cate == cate){
+        for(var j = 0;j < attr[i].attrlist.length ; j++){
+          attr[i].attrlist[j]['checked'] = false;
+
+          if(attr[i].attrlist[j]['title'] == title){
+            attr[i].attrlist[j]['checked'] = true;
+          }
+        }
+      }
+    }
+
+    setBottomState(() {
+      this.attrs = attr;
+    });
+    _getSelectList();
+  }
+
+  _getSelectList(){
+    var attr = this.attrs;
+    List<String> temp = [];
+    for(var i = 0;i < attr.length;i++){
+      for(var j = 0;j < attr[i].attrlist.length ; j++){
+
+        if(attr[i].attrlist[j]['checked'] == true){
+          temp.add(attr[i].attrlist[j]['title']);
+        }
+      }
+    }
+    setState(() {
+      this._selectValue = temp.join(',');
+    });
+  }
+  _initAttr(){
+    var attr = this.attrs;
+    for(var i = 0;i < attr.length;i++){
+      for(var j = 0;j < attr[i].list.length ; j++){
+        attr[i].attrlist.add({
+          'title':attr[i].list[j],
+          'checked':false
+        });
+      }
+    }
+    _getSelectList();
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -278,4 +272,8 @@ class ProductContentFirstState extends State<ProductContentFirst> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

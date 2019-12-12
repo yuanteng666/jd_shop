@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:jd_shop/providers/Counter.dart';
+import 'package:provider/provider.dart';
 class PersonPage extends StatefulWidget {
   @override
   PersonPageState createState() => new PersonPageState();
@@ -8,9 +9,10 @@ class PersonPage extends StatefulWidget {
 class PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<Counter>(context);
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('个人'),
+        title: new Text('${provider.count}',style: TextStyle(color: Colors.red),)
       ),
     );
   }

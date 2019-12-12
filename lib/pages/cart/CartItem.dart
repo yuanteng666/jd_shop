@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:jd_shop/providers/Counter.dart';
-import 'package:provider/provider.dart';
-class CartPage extends StatefulWidget {
+
+class CartItem extends StatefulWidget {
   @override
-  CartPageState createState() => new CartPageState();
+  CartItemState createState() => new CartItemState();
 }
 
-class CartPageState extends State<CartPage> {
+class CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<Counter>(context);
     return new Scaffold(
       appBar: new AppBar(
-        title: InkWell(
-          child: new Text('${provider.count}'),
-          onTap: (){
-            provider.increamCount();
-          },
-        ),
+        title: new Text('CartItem'),
       ),
     );
   }
@@ -34,7 +27,7 @@ class CartPageState extends State<CartPage> {
   }
 
   @override
-  void didUpdateWidget(CartPage oldWidget) {
+  void didUpdateWidget(CartItem oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
   }
