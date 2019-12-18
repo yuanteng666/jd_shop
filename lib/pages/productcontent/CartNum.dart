@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
 
 class CartNum extends StatefulWidget {
+    int num;
 
-  int num;
+    CartNum(this.num);
 
-  CartNum(this.num);
-
-  @override
+    @override
   CartNumState createState() => new CartNumState();
 }
 
 class CartNumState extends State<CartNum> {
+    int num;
   @override
   Widget build(BuildContext context) {
       ScreenAdapter.init(context);
@@ -40,7 +40,11 @@ class CartNumState extends State<CartNum> {
               child: Text('-'),
           ),
           onTap: (){
-
+            if(this.num > 1){
+                setState(() {
+                    this.num--;
+                });
+            }
           },
       );
   }
@@ -54,7 +58,9 @@ class CartNumState extends State<CartNum> {
               child: Text('+'),
           ),
           onTap: (){
-
+              setState(() {
+                this.num++;
+              });
           },
       );
   }
@@ -68,13 +74,14 @@ class CartNumState extends State<CartNum> {
               right: BorderSide(width: 1.0,color: Colors.black12))
           ),
           alignment: Alignment.center,
-          child: Text('${widget.num}'),
+          child: Text('${this.num}'),
       );
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    this.num = widget.num;
   }
 
   @override

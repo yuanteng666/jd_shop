@@ -7,9 +7,11 @@ import '../widgets/JdButton.dart';
 import 'package:dio/dio.dart';
 import 'package:jd_shop/config/Config.dart';
 import 'package:jd_shop/modal/ProductContentModel.dart';
-
+import 'package:jd_shop/services/EventBus.dart';
 import 'package:jd_shop/widgets/LoadingWidget.dart';
-
+import 'package:jd_shop/services/CartService.dart';
+import 'package:jd_shop/providers/Cart.dart';
+import 'package:provider/provider.dart';
 class ProductContent extends StatefulWidget {
   Map arguments;
 
@@ -22,8 +24,12 @@ class ProductContent extends StatefulWidget {
 class ProductContentState extends State<ProductContent> {
   Result result;
   List _productContentList = [];
+  var cartProvider;
+
   @override
   Widget build(BuildContext context) {
+    cartProvider =  Provider.of<Cart>(context);
+
     ScreenAdapter.init(context);
     return DefaultTabController(
       length: 3,
@@ -120,8 +126,12 @@ class ProductContentState extends State<ProductContent> {
                               child: JdButton(
                                 text: '加入购物车',
                                 color: Color.fromRGBO(253, 1, 0, 0.9),
-                                callBack: () {
-                                  print('加入购购物车');
+                                callBack: () async{
+                                  if(this._productContentList[0].attr.length > 0){
+                                    eventBus.fire(new ProductContentBus('加入购购物车'));
+                                  }else{
+                                    await  CartService.addCart(this.result);
+                                    cartProvider.updateProvider();                                  }
                                 },
                               )),
                           Expanded(
@@ -131,6 +141,11 @@ class ProductContentState extends State<ProductContent> {
                                 color: Color.fromRGBO(255, 165, 0, 0.9),
                                 callBack: () {
                                   print('立即购买');
+                                  if(this._productContentList[0].attr.length > 0){
+                                    eventBus.fire(new ProductContentBus('立即购买'));
+                                  }else{
+                                    print('立即购买');
+                                  }
                                 },
                               )),
                         ],

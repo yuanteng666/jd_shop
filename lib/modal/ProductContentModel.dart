@@ -34,6 +34,8 @@ class Result {
     String subTitle;
     int salecount;
 
+    int count;
+    String selectAttr;
     Result(
         {this.sId,
             this.title,
@@ -72,6 +74,8 @@ class Result {
         }
         subTitle = json['sub_title'];
         salecount = json['salecount'];
+        count = 1;
+        selectAttr = null;
     }
 
     Map<String, dynamic> toJson() {

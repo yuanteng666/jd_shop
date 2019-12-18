@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
-import 'CartNum.dart';
+import 'package:jd_shop/pages/cart/CartNum.dart';
 class CartItem extends StatefulWidget {
+  Map _data;
+
+  CartItem(this._data);
+
   @override
   CartItemState createState() => new CartItemState();
 }
 
 class CartItemState extends State<CartItem> {
+  Map _itemData;
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
@@ -29,7 +34,7 @@ class CartItemState extends State<CartItem> {
           Container(
             height: ScreenAdapter.setWidth(160),
             child: Image.network(
-              'http://jd.itying.com/public/upload/E8jnbcercoZGdllR3r9QN5aD.jpg',
+              '${_itemData['pic']}',
               fit: BoxFit.cover,
             ),
           ),
@@ -39,20 +44,25 @@ class CartItemState extends State<CartItem> {
               padding: EdgeInsets.all(10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    '三国魏黄初5年（公元224年）置范阳国，黄初7年（226年）涿郡（今河北涿州，范阳两字开始与涿州结合）改名为范阳郡，辖今北京昌平区、房山区及河北涿州一带。',
+                    '${_itemData['title']}',
                     maxLines: 2,
+                  ),
+                  Text(
+                    '${_itemData['selectedAttr']}',
+                    maxLines: 1,
                   ),
                   Stack(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("￥100",style: TextStyle(color: Colors.red),),
+                        child: Text("￥${_itemData['price']}",style: TextStyle(color: Colors.red),),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: CartNum(),
+                        child: CartNum(_itemData['count']),
                       )
                     ],
                   )
@@ -69,6 +79,7 @@ class CartItemState extends State<CartItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    this._itemData = widget._data;
   }
 
   @override

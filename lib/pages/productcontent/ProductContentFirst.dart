@@ -2,10 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:jd_shop/modal/ProductContentModel.dart';
+import 'package:jd_shop/services/EventBus.dart';
 
 import '../../utils/ScreenAdapter.dart';
 import '../../widgets/JdButton.dart';
 import 'package:jd_shop/config/Config.dart';
+import 'package:jd_shop/pages/productcontent/CartNum.dart';
+import 'package:jd_shop/services/CartService.dart';
+import 'package:jd_shop/providers/Cart.dart';
+import 'package:provider/provider.dart';
+
 class ProductContentFirst extends StatefulWidget {
   final List _productContentList ;
 
@@ -20,10 +26,14 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
   List<Attr> attrs;
   String _selectValue = '';
 
+  var actionEventBus;
+  var cartProvider;
   _attrShowActionSheet(){
     showModalBottomSheet(context: context, builder: (context){
+
       return StatefulBuilder(
         builder: (BuildContext context,setBottomState){
+
           return GestureDetector(
             onTap: (){
               return false;
@@ -66,6 +76,18 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
                             ],
                           );
                         }).toList(),
+                      ),
+                      Divider(),
+                      Container(
+                        height: ScreenAdapter.setHeight(80.0),
+                        padding: EdgeInsets.only(left: ScreenAdapter.setWidth(30.0)),
+                        child: Row(
+                          children: <Widget>[
+                            Text('数量：',style: TextStyle(fontWeight: FontWeight.bold),),
+                            SizedBox(width: ScreenAdapter.setWidth(10.0),),
+                            CartNum(this.result.count)
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -80,8 +102,13 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
                             child:JdButton(
                               text: '加入购物车',
                               color: Color.fromRGBO(253, 1, 0, 0.9),
-                              callBack: (){
+                              callBack: () async {
                                 print('加入购购物车');
+                                await  CartService.addCart(this.result);
+                                //关闭bottomSheet
+                                Navigator.of(context).pop();
+                                cartProvider.updateProvider();
+
                               },
                             )
                         ),
@@ -110,6 +137,7 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
+    cartProvider =  Provider.of<Cart>(context);
     //处理图片
     String pic = Config.DOMAIN + this.result.pic;
     pic = pic.replaceAll('\\', '/');
@@ -206,6 +234,10 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
     });
     print(attrs);
     this._initAttr();
+    actionEventBus  = eventBus.on<ProductContentBus>().listen((event){
+      print(event);
+      this._attrShowActionSheet();
+    });
   }
 
   _changeAttr(cate,title,setBottomState){
@@ -241,6 +273,7 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
     }
     setState(() {
       this._selectValue = temp.join(',');
+      this.result.selectAttr = this._selectValue;
     });
   }
   _initAttr(){
@@ -259,6 +292,7 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    this.actionEventBus.cancel();
   }
 
   @override
