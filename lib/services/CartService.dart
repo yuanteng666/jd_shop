@@ -43,7 +43,11 @@ class CartService {
 
     data['_id'] = item.sId;
     data['title'] = item.title;
-    data['price'] = item.price;
+    if(item.price is int || item.price is double){
+        data['price'] = item.price;
+    }else{
+        data['price'] = double.parse(item.price);
+    }
     data['selectedAttr'] = item.selectAttr;
     data['count'] = item.count;
     data['pic'] = pic;

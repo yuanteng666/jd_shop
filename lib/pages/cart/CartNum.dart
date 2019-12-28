@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
+import 'package:jd_shop/providers/Cart.dart';
+import 'package:provider/provider.dart';
 
 class CartNum extends StatefulWidget {
+    //这个地方是引用传递，如果直接传值 num 的话不会影响到provider的数量值，比较麻烦
+  Map itemData;
 
-  int num;
-
-  CartNum(this.num);
+  CartNum(this.itemData);
 
   @override
   CartNumState createState() => new CartNumState();
 }
 
 class CartNumState extends State<CartNum> {
+    Map _itemData;
+    var provider;
   @override
   Widget build(BuildContext context) {
+
       ScreenAdapter.init(context);
+      this._itemData = widget.itemData;
+
+      provider = Provider.of<Cart>(context);
     return new Container(
         width: ScreenAdapter.setWidth(150),
         decoration: BoxDecoration(
@@ -40,6 +48,11 @@ class CartNumState extends State<CartNum> {
               child: Text('-'),
           ),
           onTap: (){
+              //有了provider不用 setstate也能改变数据
+              if(this._itemData['count'] > 1){
+                  this._itemData['count']--;
+                  provider.changeItemCount();
+              }
 
           },
       );
@@ -54,7 +67,8 @@ class CartNumState extends State<CartNum> {
               child: Text('+'),
           ),
           onTap: (){
-
+              this._itemData['count']++;
+              provider.changeItemCount();
           },
       );
   }
@@ -68,7 +82,7 @@ class CartNumState extends State<CartNum> {
               right: BorderSide(width: 1.0,color: Colors.black12))
           ),
           alignment: Alignment.center,
-          child: Text('${widget.num}'),
+          child: Text('${this._itemData['count']}'),
       );
   }
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
 import 'package:jd_shop/pages/cart/CartNum.dart';
+import 'package:provider/provider.dart';
+import 'package:jd_shop/providers/Cart.dart';
 class CartItem extends StatefulWidget {
   Map _data;
 
@@ -15,7 +17,9 @@ class CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
+    this._itemData = widget._data;
 
+    var cartProvider = Provider.of<Cart>(context);
     return Container(
       height: ScreenAdapter.setHeight(200),
       decoration: BoxDecoration(
@@ -27,8 +31,13 @@ class CartItemState extends State<CartItem> {
             height: ScreenAdapter.setHeight(80),
             child: Checkbox(
               activeColor: Colors.redAccent,
-              onChanged: (value) {},
-              value: false,
+              onChanged: (value) {
+                setState(() {
+                  _itemData['checked'] = !_itemData['checked'];
+                });
+                cartProvider.itemCheckedChange();
+              },
+              value: _itemData['checked'],
             ),
           ),
           Container(
@@ -62,7 +71,7 @@ class CartItemState extends State<CartItem> {
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: CartNum(_itemData['count']),
+                        child: CartNum(_itemData),
                       )
                     ],
                   )
@@ -75,12 +84,6 @@ class CartItemState extends State<CartItem> {
     );
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    this._itemData = widget._data;
-  }
 
   @override
   void dispose() {

@@ -11,17 +11,22 @@ class CartPage extends StatefulWidget {
 }
 
 class CartPageState extends State<CartPage> {
+  bool isEdit = false;
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
-    var cartProvider = Provider.of<Cart>(context);
+    var  cartProvider = Provider.of<Cart>(context);
     return new Scaffold(
       appBar: new AppBar(
         title: Text('购物车'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.share),
-            onPressed: null,
+            icon: Icon(Icons.edit),
+            onPressed: (){
+              setState(() {
+                this.isEdit = !this.isEdit;
+              });
+            },
           )
         ],
       ),
@@ -62,23 +67,45 @@ class CartPageState extends State<CartPage> {
                             child: Row(
                               children: <Widget>[
                                 Checkbox(
-                                  value: false,
+                                  value: cartProvider.isCheckedAll,
                                   activeColor: Colors.redAccent,
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                      cartProvider.checkAll(value);
+                                  },
                                 ),
-                                Text('全选')
+                                Text('全选'),
+                                SizedBox(width: 20.0,),
+                                this.isEdit ? Text('总价: '):Text(''),
+                                this.isEdit ? Text('${cartProvider.allPrice}',style: TextStyle(color: Colors.redAccent,fontSize: 20.0),):Text('')
+
                               ],
                             ),
                           ),
                         ),
-                        Align(
+                        this.isEdit ? Align(
                           alignment: Alignment.centerRight,
                           child: RaisedButton(
                             child: Text(
                               '结算',
                               style: TextStyle(color: Colors.white),
                             ),
-                            color: Colors.red,
+                            color: Colors.redAccent,
+                            onPressed: (){
+
+                            },
+                          ),
+                        ):Align(
+                          alignment: Alignment.centerRight,
+                          child: RaisedButton(
+                            child: Text(
+                              '删除',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Colors.redAccent,
+                            onPressed: (){
+                                //删除选中数据
+                                cartProvider.removeItem();
+                            },
                           ),
                         )
                       ],

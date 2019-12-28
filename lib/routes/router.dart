@@ -3,12 +3,14 @@ import '../pages/tabs/Tabs.dart';
 import '../pages/Search.dart';
 import '../pages/ProductList.dart';
 import '../pages/ProductContent.dart';
+import '../pages/tabs/Cart.dart';
 //配置路由
 final routes = {
   '/': (context) => Tabs(),
   '/search':(context) => Search(),
   '/productList': (context,{arguments}) => ProductListPage(arguments:arguments),
   '/ProductContent': (context,{arguments}) => ProductContent(arguments:arguments),
+  '/cart': (context,) => CartPage(),
 
 };
 

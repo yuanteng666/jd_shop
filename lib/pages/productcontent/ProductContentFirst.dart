@@ -11,7 +11,7 @@ import 'package:jd_shop/pages/productcontent/CartNum.dart';
 import 'package:jd_shop/services/CartService.dart';
 import 'package:jd_shop/providers/Cart.dart';
 import 'package:provider/provider.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class ProductContentFirst extends StatefulWidget {
   final List _productContentList ;
 
@@ -108,7 +108,15 @@ class ProductContentFirstState extends State<ProductContentFirst> with Automatic
                                 //关闭bottomSheet
                                 Navigator.of(context).pop();
                                 cartProvider.updateProvider();
-
+                                Fluttertoast.showToast(
+                                    msg: "加入购购物车成功",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.redAccent,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
                               },
                             )
                         ),
