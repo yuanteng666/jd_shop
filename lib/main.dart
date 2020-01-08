@@ -4,6 +4,7 @@ import 'routes/router.dart';
 import 'package:provider/provider.dart';
 import 'package:jd_shop/providers/Counter.dart';
 import 'package:jd_shop/providers/Cart.dart';
+import 'package:jd_shop/providers/CheckOutProvider.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,6 +23,9 @@ class MyAppState extends State<MyApp> {
           ),
           ChangeNotifierProvider(
             create: (_) => Cart(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => CheckOutProvider(),
           )
         ],
         child: MaterialApp(

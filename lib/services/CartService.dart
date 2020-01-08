@@ -55,4 +55,20 @@ class CartService {
     data['checked'] = true;
     return data;
   }
+
+  static  getCheckItem() async{
+    List cartData ;
+    List checkData = [] ;
+    try{
+        cartData = json.decode(await Storage.getString('cartList'));
+        for(var i = 0; i < cartData.length ;i++){
+            if(cartData[i]['checked'] == true){
+                checkData.add(cartData[i]);
+            }
+        }
+    }catch(e){
+        cartData = [];
+    }
+    return checkData;
+  }
 }

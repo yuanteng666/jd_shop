@@ -4,7 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
 import 'package:jd_shop/pages/cart/CartItem.dart';
 import 'package:jd_shop/providers/Cart.dart';
-
+import 'package:jd_shop/services/CartService.dart';
+import 'package:jd_shop/providers/CheckOutProvider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jd_shop/services/UserInfoSerive.dart';
 class CartPage extends StatefulWidget {
   @override
   CartPageState createState() => new CartPageState();
@@ -12,10 +15,12 @@ class CartPage extends StatefulWidget {
 
 class CartPageState extends State<CartPage> {
   bool isEdit = false;
+  CheckOutProvider checkOutProvider;
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
     var  cartProvider = Provider.of<Cart>(context);
+    checkOutProvider = Provider.of<CheckOutProvider>(context);
     return new Scaffold(
       appBar: new AppBar(
         title: Text('购物车'),
@@ -91,7 +96,7 @@ class CartPageState extends State<CartPage> {
                             ),
                             color: Colors.redAccent,
                             onPressed: (){
-
+                              goCheckOut();
                             },
                           ),
                         ):Align(
@@ -120,6 +125,35 @@ class CartPageState extends State<CartPage> {
     );
   }
 
+  goCheckOut() async{
+    //获取  购物车数据
+    List list = await CartService.getCheckItem();
+    //保存到 provider
+    this.checkOutProvider.changeCheckOutList(list);
+    //判断是否有选中的数据
+    if(list.length > 0){
+      //判断用户是否登录
+      var loginstate = await UserInfoSerive.getUserInfoState();
+      if(loginstate){
+        Navigator.pushNamed(context, '/checkOut');
+      }else{
+        Fluttertoast.showToast(
+            msg: '你还没有登录，请登录后再结算',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white);
+        Navigator.pushNamed(context, '/login');
+      }
+    }else{
+      Fluttertoast.showToast(
+          msg: '请先选中数据',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white);
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState

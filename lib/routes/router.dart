@@ -8,7 +8,7 @@ import '../pages/Login.dart';
 import '../pages/registers/RegisterFirstPage.dart';
 import '../pages/registers/RegisterSecondPage.dart';
 import '../pages/registers/RegisterThridPage.dart';
-
+import '../pages/CheckOut.dart';
 //配置路由
 final routes = {
   '/': (context) => Tabs(),
@@ -19,9 +19,8 @@ final routes = {
   '/login':(context,) => Login(),
   '/registerfirst':(context,) => RegisterFirstPage(),
   '/registersecond':(context,{arguments}) => RegisterSecondPage(arguments: arguments,),
-  '/registerthrid':(context,{arguments}) => RegisterThridPage(arguments: arguments,)
-
-
+  '/registerthrid':(context,{arguments}) => RegisterThridPage(arguments: arguments,),
+  '/checkOut':(context,) => CheckOutPage(),
 };
 
 //固定写法
