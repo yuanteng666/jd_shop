@@ -4,6 +4,11 @@ import '../pages/Search.dart';
 import '../pages/ProductList.dart';
 import '../pages/ProductContent.dart';
 import '../pages/tabs/Cart.dart';
+import '../pages/Login.dart';
+import '../pages/registers/RegisterFirstPage.dart';
+import '../pages/registers/RegisterSecondPage.dart';
+import '../pages/registers/RegisterThridPage.dart';
+
 //配置路由
 final routes = {
   '/': (context) => Tabs(),
@@ -11,6 +16,11 @@ final routes = {
   '/productList': (context,{arguments}) => ProductListPage(arguments:arguments),
   '/ProductContent': (context,{arguments}) => ProductContent(arguments:arguments),
   '/cart': (context,) => CartPage(),
+  '/login':(context,) => Login(),
+  '/registerfirst':(context,) => RegisterFirstPage(),
+  '/registersecond':(context,{arguments}) => RegisterSecondPage(arguments: arguments,),
+  '/registerthrid':(context,{arguments}) => RegisterThridPage(arguments: arguments,)
+
 
 };
 

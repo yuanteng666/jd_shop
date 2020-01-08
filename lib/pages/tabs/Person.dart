@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jd_shop/providers/Counter.dart';
 import 'package:jd_shop/utils/ScreenAdapter.dart';
 import 'package:provider/provider.dart';
+import 'package:jd_shop/services/UserInfoSerive.dart';
+import 'package:jd_shop/widgets/JdButton.dart';
+import 'package:jd_shop/services/EventBus.dart';
 
 class PersonPage extends StatefulWidget {
   @override
@@ -9,6 +12,18 @@ class PersonPage extends StatefulWidget {
 }
 
 class PersonPageState extends State<PersonPage> {
+
+  bool isLogin = false;
+  List userInfo = [];
+
+  _getUserInfo() async{
+    var isLogin2 = await UserInfoSerive.getUserInfoState();
+    var userinfo2 = await UserInfoSerive.getUserInfo();
+    setState(() {
+      this.isLogin = isLogin2;
+      this.userInfo = userinfo2;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
@@ -34,18 +49,25 @@ class PersonPageState extends State<PersonPage> {
                       height: ScreenAdapter.setWidth(100.0),
                     )),
                   ),
-//                      Expanded(
-//                            flex: 1,
-//                          child: Text('登录/注册',style: TextStyle(color: Colors.white,fontSize: 16.0),),
-//                      )
-                  Expanded(
+                  !this.isLogin?Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      child: Text(
+                        '登录/注册',
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                    ),
+                  ):Expanded(
                     flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '用户名：123456',
+                          '用户名：${this.userInfo[0]['username']}',
                           style: TextStyle(color: Colors.white, fontSize: ScreenAdapter.setFontsize(36.0)),
                         ),
                         Text(
@@ -76,7 +98,7 @@ class PersonPageState extends State<PersonPage> {
           ),
           Container(
             width: double.infinity,
-            height: 20.0,
+            height: ScreenAdapter.setHeight(15.0),
             color: Colors.black12,
           ),
           ListTile(
@@ -94,7 +116,19 @@ class PersonPageState extends State<PersonPage> {
             ),
             title: Text('在线客服'),
           ),
-          Divider()
+          Divider(),
+          SizedBox(height: ScreenAdapter.setHeight(30.0),),
+          this.isLogin?Container(
+            padding: EdgeInsets.only(left: 20.0,right: 20.0),
+            child: JdButton(
+              color: Colors.redAccent,
+              text: '退出登录',
+              callBack: (){
+                UserInfoSerive.loginOut();
+                this._getUserInfo();
+              },
+            ),
+          ):Text('')
         ],
       ),
     );
@@ -104,6 +138,13 @@ class PersonPageState extends State<PersonPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    this._getUserInfo();
+    //监听eventbus 广播
+    eventBus.on<UserBus>().listen((event){
+      print(event);
+      this._getUserInfo();
+    });
   }
 
   @override

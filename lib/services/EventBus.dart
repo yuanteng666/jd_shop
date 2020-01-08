@@ -9,3 +9,10 @@ class ProductContentBus{
     ProductContentBus(this.string);
 
 }
+
+class UserBus{
+    String string;
+
+    UserBus(this.string);
+
+}
