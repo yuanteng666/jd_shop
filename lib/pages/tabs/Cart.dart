@@ -14,7 +14,7 @@ class CartPage extends StatefulWidget {
 }
 
 class CartPageState extends State<CartPage> {
-  bool isEdit = false;
+  bool isEdit = true;
   CheckOutProvider checkOutProvider;
   @override
   Widget build(BuildContext context) {

@@ -16,3 +16,10 @@ class UserBus{
     UserBus(this.string);
 
 }
+
+class AddressBus{
+    String string;
+
+    AddressBus(this.string);
+
+}

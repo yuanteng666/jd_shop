@@ -6,15 +6,17 @@ class JdText extends StatelessWidget {
     String hintText;
     bool isPWD ;
     Object onChanged;
+    int maxLines;
+    double height;
 
-    JdText({Key key,this.hintText = '请输入',this.isPWD = false,this.onChanged = null }):super(key:key);
+    JdText({Key key,this.hintText = '请输入',this.isPWD = false,this.onChanged = null,this.height = 120,this.maxLines = 1 }):super(key:key);
 
   @override
   Widget build(BuildContext context) {
       ScreenAdapter.init(context);
     return Container(
-        height: ScreenAdapter.setHeight(120.0),
-        alignment: Alignment.bottomCenter,
+        height: ScreenAdapter.setHeight(this.height),
+        alignment: Alignment.topCenter,
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
@@ -26,6 +28,7 @@ class JdText extends StatelessWidget {
         ),
         child: TextField(
             autofocus: true,
+            maxLines: this.maxLines,
             obscureText: this.isPWD,
             decoration: InputDecoration(
                 hintText: this.hintText,

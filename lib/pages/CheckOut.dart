@@ -73,17 +73,20 @@ class CheckOutPageState extends State<CheckOutPage> {
                           color: Colors.white,
                           child: Column(
                               children: <Widget>[
-//                                  ListTile(
-//                                      leading: Icon(Icons.add_location),
-//                                      title: Text('请添加收货地址'),
-//                                      trailing: Icon(Icons.navigate_next),
-//                                  ),
                                   ListTile(
                                       leading: Icon(Icons.location_on),
-                                      title: Text('河南省南阳市内乡县'),
-                                      subtitle: Text('12318756265'),
+                                      title: Text('请添加收货地址'),
                                       trailing: Icon(Icons.navigate_next),
-                                  )
+                                      onTap: (){
+                                          Navigator.pushNamed(context, '/addressList');
+                                      },
+                                  ),
+//                                  ListTile(
+//                                      leading: Icon(Icons.location_on),
+//                                      title: Text('河南省南阳市内乡县'),
+//                                      subtitle: Text('12318756265'),
+//                                      trailing: Icon(Icons.navigate_next),
+//                                  )
                               ],
                           ),
                       ),
